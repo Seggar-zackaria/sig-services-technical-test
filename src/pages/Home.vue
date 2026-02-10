@@ -69,7 +69,7 @@ onMounted(() => {
 <template>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 min-h-[80vh]">
     <!-- Header Section -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+    <div class="gap-6 mb-10">
       <div>
         <h1 class="text-3xl font-bold text-slate-900 tracking-tight">
           {{ data.length }} Candidatures
@@ -77,7 +77,9 @@ onMounted(() => {
         <p class="text-slate-500 mt-1">Gérez et suivez les profils de candidats.</p>
       </div>
 
-      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full md:w-auto">
+      <div
+        class="flex lg:justify-end flex-col mt-8 sm:flex-row items-stretch sm:items-center gap-4 w-full md:w-auto"
+      >
         <div class="w-full sm:w-64">
           <SearchBar v-model="searchQuery" placeholder="Rechercher un candidat..." />
         </div>
@@ -159,15 +161,60 @@ onMounted(() => {
     </div>
 
     <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center">
-      <CandidateCard
-        v-for="item in data"
-        :key="item.id"
-        :candidature="item"
-        @view="openModal(item.id)"
-        @delete="handleDelete(item.id)"
-      />
+      <TransitionGroup name="list" appear>
+        <CandidateCard
+          v-for="item in data"
+          :key="item.id"
+          :candidature="item"
+          @view="openModal(item.id)"
+          @delete="handleDelete(item.id)"
+        />
+      </TransitionGroup>
     </div>
 
     <CandidateModal v-model="isModalOpen" :candidate-id="selectedCandidateId" />
   </div>
 </template>
+<style scoped>
+.gap-6 {
+  animation: fadeInDown 0.6s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.list-enter-active {
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.list-leave-active {
+  transition: all 0.4s ease-in;
+}
+
+.list-enter-from {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+}
+
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(-10px) scale(0.95);
+}
+
+/* Stagger effect for list items */
+.list-enter-active {
+  transition-delay: calc(var(--i, 0) * 0.08s);
+}
+
+.list-move {
+  transition: transform 0.5s ease;
+}
+</style>

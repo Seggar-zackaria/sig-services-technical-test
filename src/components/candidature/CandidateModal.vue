@@ -79,46 +79,48 @@ const nameFallback = computed(() =>
 <template>
   <Modal v-model="isOpen" @close="$emit('close')">
     <template #header>
-      <div class="flex items-center gap-3" v-if="candidate">
-        <h2 class="text-xl font-bold text-slate-800">Détails de la candidature</h2>
+      <div class="w-full" v-if="candidate">
+        <div class="flex flex-col xs:flex-row xs:items-center gap-2 xs:gap-3">
+          <h2 class="text-lg xs:text-xl font-bold text-slate-800">Détails de la candidature</h2>
 
-        <div v-if="!isEditingStatus" class="flex items-center gap-2">
-          <span
-            class="px-3 py-1 rounded-full text-xs font-semibold border transition-colors duration-300"
-            :style="{
-              color: statusColor,
-              borderColor: statusColor,
-              backgroundColor: '#ffffff',
-            }"
-          >
-            {{ candidate.statut }}
-          </span>
-          <Button
-            variant="ghost"
-            size="sm"
-            @click="isEditingStatus = true"
-            class="p-1 rounded-full text-slate-400 hover:text-blue-500 hover:bg-blue-50 transition-colors"
-            title="Modifier le statut"
-          >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-              />
-            </svg>
-          </Button>
-        </div>
+          <div v-if="!isEditingStatus" class="flex items-center gap-2">
+            <span
+              class="px-3 py-1 rounded-full text-xs font-semibold border transition-colors duration-300 whitespace-nowrap"
+              :style="{
+                color: statusColor,
+                borderColor: statusColor,
+                backgroundColor: '#ffffff',
+              }"
+            >
+              {{ candidate.statut }}
+            </span>
+            <Button
+              variant="ghost"
+              size="sm"
+              @click="isEditingStatus = true"
+              class="p-1 rounded-full text-slate-400 hover:text-blue-500 hover:bg-blue-50 transition-colors shrink-0"
+              title="Modifier le statut"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                />
+              </svg>
+            </Button>
+          </div>
 
-        <div v-else class="min-w-[200px]">
-          <Select
-            :model-value="candidate.statut"
-            :options="statusOptions"
-            placeholder="Changer le statut"
-            @update:model-value="handleStatusUpdate"
-            class="w-full"
-          />
+          <div v-else class="w-full xs:min-w-[200px] xs:w-auto">
+            <Select
+              :model-value="candidate.statut"
+              :options="statusOptions"
+              placeholder="Changer le statut"
+              @update:model-value="handleStatusUpdate"
+              class="w-full"
+            />
+          </div>
         </div>
       </div>
       <div v-else class="h-6 w-32 bg-slate-100 rounded animate-pulse"></div>
